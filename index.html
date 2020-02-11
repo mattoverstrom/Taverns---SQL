@@ -16,19 +16,19 @@ MobileNo varchar(15)
 ///refresh tavern database -->
 
 
-<!-- //foreign key 
+<!-- //foreign key
 alter table supplies
 add foreign key (Customer) references customer (ID);
 
 *****<RUN></RUN>****
 
-https://www.youtube.com/watch?v=9Pzj7Aj25lw 44:55 Foreign Keys 
+https://www.youtube.com/watch?v=9Pzj7Aj25lw 44:55 Foreign Keys
 
  -->
 
 
-
- DROP TABLE IF EXISTS ServiceSales, SupplySales, GuestClass, Class, GuestStatusLink, Guest, GuestStatus, Inventory, TavernOrders, Supplies, Statuses, Services, Roles, Employees, Locations, Owners, Taverns;
+_________________________________________________________________________________________________
+ <!-- DROP TABLE IF EXISTS ServiceSales, SupplySales, GuestClass, Class, GuestStatusLink, Guest, GuestStatus, Inventory, TavernOrders, Supplies, Statuses, Services, Roles, Employees, Locations, Owners, Taverns;
 
 /*Tables */
 CREATE TABLE Taverns (
@@ -112,7 +112,7 @@ CREATE TABLE Inventory (
 
 CREATE TABLE GuestStatus (
 	GuestStatusID int PRIMARY KEY IDENTITY(1,1),
-	StatusName varchar(100)	
+	StatusName varchar(100)
 );
 
 CREATE TABLE Guest (
@@ -124,7 +124,7 @@ CREATE TABLE Guest (
 
 CREATE TABLE GuestStatusLink (
 	GuestID int,
-	GuestStatusID int 
+	GuestStatusID int
 );
 
 CREATE TABLE Class (
@@ -157,7 +157,7 @@ CREATE TABLE ServiceSales (
 	ServiceCost int,
 	DatePurchased date,
 	AmountPurchased int
-    
+
 );
 
 /*Foreign Key SetUp */
@@ -186,7 +186,7 @@ ALTER TABLE SupplySales ADD FOREIGN KEY (SupplyID, SupplyCost) REFERENCES Suppli
 /*Insert Values into Tables */
 
 INSERT INTO Owners (OwnerName)
-VALUES 
+VALUES
 	('John Smith'),
 	('Aldus Dumbledore'),
 	('Ash Ketchum'),
@@ -194,7 +194,7 @@ VALUES
 	('Thomas Shelby');
 
 INSERT INTO Locations (Address, City, Country)
-VALUES 
+VALUES
 	('123 Main Street','Philadelphia','USA'),
 	('2900 Poplar Street','Berlin','Germany'),
 	('4458 East Lansing Avenue','London','England'),
@@ -202,15 +202,15 @@ VALUES
 	('8876 Rising Sn Ave','Philadelphia','USA');
 
 INSERT INTO Taverns (TavernName,LocationID,Floors,OwnerID)
-VALUES 
+VALUES
 	('Buddies',1,1,1),
 	('Leneghans',2,1,1),
 	('Crusaders',3,2,1),
 	('Flaming Moes',4,3,2),
 	('Dog & Pony',5,1,3);
-    
+
 INSERT INTO Roles (RoleName,RoleDescription)
-VALUES 
+VALUES
 	('Bartender','Take care of patrons needs, including serving food and drink'),
 	('Cook','Cook food in kitchen. Lunch and Dinner'),
 	('Bar Back','Bring beer up from cellar to stock the bar'),
@@ -218,7 +218,7 @@ VALUES
 	('DJ','Play cool music');
 
 INSERT INTO Employees (EmployeeName,TavernID,Pay,RoleID)
-VALUES 
+VALUES
 	('Bill Burr',1,20,1),
 	('Ralph Wigum',1,10,2),
 	('Andy Reid',2,35,1),
@@ -226,12 +226,12 @@ VALUES
 	('Luke Skywalker',5,23,3);
 
 INSERT INTO Statuses (StatusName)
-VALUES 
+VALUES
 	('Active'),
 	('Inactive');
-    
+
 INSERT INTO Services (ServiceName,ServiceDescription,StatusID,ServiceCost,TavernID)
-VALUES 
+VALUES
 	('Dry Cleaning','A fancy way to clean your money....',1,50,1),
 	('Horse Bets','Get all the winners',1,20,3),
 	('Moonshine','We got a guy who makes high quality bathtub Gin',2,30,2),
@@ -239,7 +239,7 @@ VALUES
 	('Screen Repair','We can fix your broken screens for some reason',2,79,4);
 
 INSERT INTO Supplies (SupplyName,SupplyDescription,UnitOfMeasure,SupplyCost)
-VALUES 
+VALUES
 	('Daisy Cutter','IPA','Ounce',6),
 	('Stone Cutter','Belgian Wheat','Ounce',7),
 	('Jaromir Lagr','Lager from Czech Mountains','Ounce',6),
@@ -247,7 +247,7 @@ VALUES
 	('Nightmare Ale','Strong Ale','Ounce',5);
 
 INSERT INTO TavernOrders (SupplyID,Amount,TotalCost,DateRcvd,TavernID)
-VALUES 
+VALUES
 	(1,250,1550,'2020-01-05',1),
 	(2,600,4500,'2020-01-07',1),
 	(3,50,6868,'2020-01-05',2),
@@ -255,7 +255,7 @@ VALUES
 	(4,20,700,'2020-01-06',5);
 
 INSERT INTO Inventory (TavernID,SupplyID,CurrentCount,DateUpdated)
-VALUES 
+VALUES
 	(1,1,600,'2020-01-06'),
 	(1,2,400,'2020-01-06'),
 	(1,3,770,'2020-01-06'),
@@ -273,7 +273,7 @@ VALUES
 	(3,5,300,'2020-01-06');
 
 INSERT INTO GuestStatus (StatusName)
-VALUES 
+VALUES
 	('Hungry'),
 	('Hangry'),
 	('Raging'),
@@ -283,8 +283,8 @@ VALUES
 	('Sad');
 
 INSERT INTO Class (ClassName)
-VALUES 
-	
+VALUES
+
 	('Paladin'),
     ('Dragoon');
     ('Red Mage'),
@@ -292,9 +292,9 @@ VALUES
 	('Black Mage'),
 	('Fighter'),
 	('Thief'),
-    
+
 INSERT INTO Guest (GuestName, GuestBDay, GuestCDay)
-VALUES 
+VALUES
 	('MattyO', '1980-01-01', '2014-01-01'),
 	('Matt', '1980-01-01', '2014-01-01'),
     ('Yeasol', '1980-01-01', '2014-01-01'),
@@ -302,9 +302,9 @@ VALUES
     ('Mom', '1980-01-01', '2014-01-01');
 
 INSERT INTO GuestClass (GuestID, ClassID, ClassLevel)
-VALUES 
+VALUES
 	(1,1,1),
 	(2,3,4),
 	(3,2,5),
 	(4,6,2),
-	(5,2,4);
+	(5,2,4); -->
