@@ -125,6 +125,10 @@
 //   INSERT INTO works_with VALUES(105, 406, 130000);
 
 
+
+https://www.youtube.com/watch?v=JLeaM8pK8dE&list=PL08903FB7ACA1C2FB&index=4&t=0s
+foreign key 
+
 https://www.youtube.com/watch?v=HXV3zeQKqGY    2:17 create database + foreign keys
 
 
