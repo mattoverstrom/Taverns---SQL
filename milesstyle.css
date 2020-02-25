@@ -1,24 +1,35 @@
 /* HW5
 
---1
+1
 SELECT OwnerUserName.Name, RoleOwners.Name, RoleOwners.RoleDescription FROM OwnerUserName
 INNER JOIN RoleOwners ON (OwnerUserName.idRole = RoleOwners.id)
 
+2.
+
+SELECT Guests.Name, Classes.Name, Levels1.idClass, COUNT(Levels1.idGuest) FROM Levels1
+INNER JOIN Guests ON (Levels1.idGuest = Guests.id)
+INNER JOIN Classes ON (Levels1.idClass = Classes.id)
+
+GROUP BY Guests.Name, Classes.Name, Levels1.idClass
 
 
---3
+select * from Classes
+
+3.
+
 SELECT idGuest, Guests.Name, idClass, Classes.Name, Level,
 CASE WHEN Level BETWEEN 1 and 10 THEN 'Noob'
 WHEN Level BETWEEN 11 and 20 THEN 'Intermediate'
 WHEN Level BETWEEN 21 and 30 THEN 'Pro'
 WHEN Level BETWEEN 31 and 40 THEN 'Expert'
 WHEN Level BETWEEN 41 and 50 THEN 'Master'
-END AS Brackets FROM Levels
-INNER JOIN Guests ON (Levels.idGuest = Guests.id)
-INNER JOIN Classes ON (Levels.idClass = Classes.id)
+END AS Brackets FROM Levels1
+INNER JOIN Guests ON (Levels1.idGuest = Guests.id)
+INNER JOIN Classes ON (Levels1.idClass = Classes.id)
 ORDER BY Guests.Name asc;
 
---4
+
+4.
 GO
 IF OBJECT_ID (N'dbo.GetBrackets', N'FN') IS NOT NULL  
     DROP FUNCTION dbo.GetBrackets;  
@@ -45,9 +56,9 @@ END;
 
 GO
 
-SELECT idGuest, Guests.Name, idClass, Classes.Name, Level, dbo.GetBrackets(Level) AS LevelBrackets FROM Levels
-INNER JOIN Guests ON (Levels.idGuest = Guests.id)
-INNER JOIN Classes ON (Levels.idClass = Classes.id)
+SELECT idGuest, Guests.Name, idClass, Classes.Name, Level, dbo.GetBrackets(Level) AS LevelBrackets FROM Levels1
+INNER JOIN Guests ON (Levels1.idGuest = Guests.id)
+INNER JOIN Classes ON (Levels1.idClass = Classes.id)
 ORDER BY Guests.Name asc;
 
 IF OBJECT_ID (N'dbo.RoomOpen', N'IF') IS NOT NULL
@@ -68,7 +79,12 @@ GO
 SELECT * FROM dbo.RoomOpen('2019-12-21');
 SELECT * FROM Stays
 
---6
+
+
+
+
+6.
+
 GO
  IF OBJECT_ID (N'dbo.PriceRange', N'IF') IS NOT NULL
 DROP FUNCTION dbo.PriceRange;
@@ -87,94 +103,109 @@ WHERE Rooms.Cost BETWEEN @min AND @max
 GO
 SELECT * FROM dbo.PriceRange(80, 130)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+need 2
+
+create procedure
 --7
-IF OBJECT_ID (N'dbo.CreateARoom', N'P') IS NOT NULL  
-    DROP PROCEDURE dbo.CreateARoom;
-GO
-CREATE PROCEDURE dbo.CreateARoom
-@cost DECIMAL(5,2),
-@tavernsname varchar(50),
-@tavernid int
-AS
-BEGIN
-SET NOCOUNT ON;
-SET @cost = (SELECT MIN(Cost) FROM dbo.PriceRange(80, 130));
-SET @tavernsname = (SELECT TOP 1 Name FROM dbo.PriceRange(80, 130) AS NewRoom
-WHERE Cost = (
-        SELECT MIN(Cost)
-        FROM dbo.PriceRange(80, 130)));
-SET @tavernid = (SELECT id FROM Taverns WHERE @tavernsname = Name);
-INSERT INTO Rooms (Cost, idTavern)
-VALUES (@Cost - 0.01, @Tavernid)
-END
+--IF OBJECT_ID (N'dbo.CreateARoom', N'P') IS NOT NULL  
+--    DROP PROCEDURE dbo.CreateARoom;
+--GO
+--CREATE PROCEDURE dbo.CreateARoom
+-- @cost DECIMAL(5,2),
+-- @tavernsname varchar(50),
+-- @tavernid int
+--AS
+--BEGIN
+--SET NOCOUNT ON;
+--SET @cost = (SELECT MIN(Cost) FROM dbo.PriceRange(80, 130));
+--SET @tavernsname = (SELECT TOP 1 Name FROM dbo.PriceRange(80, 130) AS NewRoom
+-- WHERE Cost = (
+--        SELECT MIN(Cost)
+--        FROM dbo.PriceRange(80, 130)));
+--SET @tavernid = (SELECT id FROM Taverns WHERE @tavernsname = Name);
+--INSERT INTO Rooms (Cost, idTavern)
+-- VALUES (@Cost - 0.01, @Tavernid)
+--END
 
-BEGIN TRANSACTION
-EXECUTE dbo.CreateARoom
-@Cost = 80,
-@Tavernsname = '',
-@Tavernid = ''
+--BEGIN TRANSACTION
+--EXECUTE dbo.CreateARoom
+--@Cost = 80,
+--@Tavernsname = '',
+--@Tavernid = ''
 
-ROLLBACK
+--ROLLBACK
 
-GO
+--GO
 
---Procedure for booking cheapest room
 
-SELECT * FROM Rooms;
-SELECT * FROM Taverns;
 
-IF OBJECT_ID('dbo.book_cheap_room',N'P') IS NOT NULL
-DROP PROCEDURE dbo.book_cheap_room;
-GO
-CREATE PROCEDURE dbo.book_cheap_room
-@Guest varchar(50),
-@Min DECIMAL(5,2),
-@Max DECIMAL(5,2),
-@Book Date,
-@checkout Date        
-AS
-BEGIN
-SET NOCOUNT ON;
-SET @Book = getdate();
-SET @checkout = getdate() + 3;
-INSERT INTO Stays (idSale, idRoom, idGuest, CheckedIn, CheckedOut, Rate )
-VALUES (
-(SELECT TOP 1 id FROM Sales ORDER BY id desc),
-(SELECT TOP 1 id FROM ROOMS WHERE number IN  (SELECT number FROM dbo.RoomOpen(@Book))
-AND number IN (SELECT number FROM dbo.PriceRange(@Min, @Max)) ORDER BY cost ASC),
-(SELECT ID FROM Guests WHERE Name Like @Guest),
-@Book,
-@checkout,
-(SELECT TOP 1 cost FROM ROOMS WHERE number IN  (SELECT number FROM dbo.RoomOpen(@Book))
-AND number IN (SELECT number FROM dbo.PriceRange(@Min, @Max)) ORDER BY cost ASC)
-)
-END
-GO
+--SELECT * FROM Rooms;
+--SELECT * FROM Taverns;
 
-BEGIN TRANSACTION
-EXEC dbo.book_cheap_room
-@Guest = 'William Tate',
-@Min = 76,
-@Max = 999,
-@book = '',
-@checkout = ''
-GO
-ROLLBACK
-select * from stays
+--IF OBJECT_ID('dbo.book_cheap_room',N'P') IS NOT NULL
+-- DROP PROCEDURE dbo.book_cheap_room;
+--GO
+--CREATE PROCEDURE dbo.book_cheap_room
+-- @Guest varchar(50),
+-- @Min DECIMAL(5,2),
+-- @Max DECIMAL(5,2),
+-- @Book Date,
+-- @checkout Date        
+--AS
+--BEGIN
+-- SET NOCOUNT ON;
+-- SET @Book = getdate();
+-- SET @checkout = getdate() + 3;
+-- INSERT INTO Stays (idSale, idRoom, idGuest, CheckedIn, CheckedOut, Rate )
+-- VALUES (
+-- (SELECT TOP 1 id FROM Sales ORDER BY id desc),
+-- (SELECT TOP 1 id FROM ROOMS WHERE number IN  (SELECT number FROM dbo.RoomOpen(@Book))
+-- AND number IN (SELECT number FROM dbo.PriceRange(@Min, @Max)) ORDER BY cost ASC),
+-- (SELECT ID FROM Guests WHERE Name Like @Guest),
+-- @Book,
+-- @checkout,
+-- (SELECT TOP 1 cost FROM ROOMS WHERE number IN  (SELECT number FROM dbo.RoomOpen(@Book))
+-- AND number IN (SELECT number FROM dbo.PriceRange(@Min, @Max)) ORDER BY cost ASC)
+-- )
+--END
+--GO
 
-GO
+--BEGIN TRANSACTION
+--EXEC dbo.book_cheap_room
+--@Guest = 'William Tate',
+--@Min = 76,
+--@Max = 999,
+--@book = '',
+--@checkout = ''
+--GO
+--ROLLBACK
+--select * from stays
 
-DROP TRIGGER addSaleBooking
-GO
-CREATE TRIGGER addSaleBooking
-ON Stays
-AFTER INSERT
-AS
+--GO
 
-INSERT INTO Sales (Name, Price, DatePurchased) SELECT Rate, CheckedIn
-FROM inserted;
+--DROP TRIGGER addSaleBooking
+--GO
+--CREATE TRIGGER addSaleBooking
+--ON Stays
+--AFTER INSERT
+--AS
 
-GO
+--INSERT INTO Sales (Name, Price, DatePurchased) SELECT Rate, CheckedIn
+--FROM inserted;
 
-SELECT * FROM Sales
- */
+--GO
+--select * from Sales
+
