@@ -2,6 +2,67 @@ https://github.com/mattoverstrom/tavern
 
 
 
+hw4
+
+1.
+SELECT OwnerUserName.Name, RoleOwners.Name, RoleDescription FROM OwnerUserName
+INNER JOIN RoleOwners ON (OwnerUserName.idRole = RoleOwners.id)
+WHERE RoleOwners.RoleDescription LIKE '%admin%';
+
+2.
+
+SELECT OwnerUserName.Name, RoleOwners.Name, RoleDescription, Taverns.Name,
+locationAddress.Name, locationAddress.City, locationAddress.Country FROM OwnerUserName
+INNER JOIN RoleOwners ON (OwnerUserName.idRole = RoleOwners.id)
+INNER JOIN taverns ON (OwnerUserName.id = Taverns.id)
+INNER JOIN locationAddress ON (Taverns.id = locationAddress.id)
+WHERE RoleOwners.RoleDescription LIKE '%admin%'
+
+3
+
+--SELECT Guests.Name, Class.Name, Level FROM Levels1
+-- INNER JOIN Guests ON (Guests.id = Levels1.idGuest)
+-- INNER JOIN Class ON (class.id= Level1s.idClass)
+-- ORDER BY Guests.Name asc;
+
+4. select * from Levels1
+
+SELECT TOP 10 Price, Services.Name FROM Sales1
+INNER JOIN Services ON (Sales1.idServices = Services.id)
+ORDER BY Price desc;
+
+5.
+
+--SELECT idGuest, Guests.Name, Classes.Name, Level FROM Levels1
+-- INNER JOIN Guests ON (Levels1.idGuest = Guests.id)
+-- INNER JOIN Classes ON (Levels1.idClass = Classes.id)
+-- WHERE idGuest IN (SELECT idGuest FROM Levels GROUP BY idGuest HAVING COUNT(idGuest) > 1)
+-- ORDER BY Guests.Name;
+
+6.
+
+SELECT idGuest, Guests.Name, Classes.Name, Level FROM Levels1
+INNER JOIN Guests ON (Levels1.idGuest = Guests.id)
+INNER JOIN Classes ON (Levels1.idClass = Classes.id)
+WHERE Level > 5 AND idGuest IN (SELECT idGuest FROM Levels1 GROUP BY idGuest HAVING COUNT(idGuest) > 1)
+ORDER BY idGuest;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------hw3
 
 
 --2:
