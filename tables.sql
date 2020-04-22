@@ -72,6 +72,9 @@ idSupplies int
 --    Name VARCHAR(50)
 --);
 
+
+
+/////documentation for creating tables 
 CREATE TABLE Levels1 (
     id tinyint IDENTITY(1,1) PRIMARY KEY,
 idGuest int,
